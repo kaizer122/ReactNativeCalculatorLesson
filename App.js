@@ -1,43 +1,18 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import React, {useState} from 'react';
 
-import React, {useState, useEffect} from 'react';
+import {SafeAreaView, StyleSheet, View, Text, StatusBar} from 'react-native';
 
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-  TextInput,
-  Alert,
-} from 'react-native';
-
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 import Button from './components/Button';
 
 const App = () => {
   const [a, seta] = useState('');
-  const [prev, setPrev] = useState(0);
 
   const click = (value) => {
     const openPars = String(a).match(/\(/g) || [];
     const closePars = String(a).match(/\)/g) || [];
 
     switch (value) {
-      case '<-':
+      case '<=':
         if (a.length >= 1) {
           if (endsWithOperation(a)) seta((lastA) => lastA.replace(/.$/, ''));
           else seta((lastA) => lastA.replace(/[0-9]+/, ''));
@@ -69,15 +44,15 @@ const App = () => {
           String(a).lastIndexOf(')') === a.length - 1
         )
           break;
-        if (openPars.length > closePars.length) seta((a) => a + ')');
-        else seta((a) => a + '(');
+
+        seta((a) => (openPars.length > closePars.length ? a + ')' : a + '('));
         break;
       case '=':
         let x = a;
         if (endsWithOperation(a)) {
           x = x.substr(0, x.length - 1);
         }
-        seta(sum(x));
+        seta(eval(x));
         break;
 
       default:
@@ -105,7 +80,7 @@ const valuesArray = [
   'C',
   '( )',
   '%',
-  '<-',
+  '<=',
   '7',
   '8',
   '9',
